@@ -1,3 +1,33 @@
 from django.contrib import admin
+from .models import Category, Product, Blog, Website_Info
 
 # Register your models here.
+
+@admin.register(Category)
+class CategoryAmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+    list_per_page = 10
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("name", "category", "original_price", "discount_price", "stock",
+    "unit", "photo", "status", "featured", "best_seller")
+    search_fields = ("name", "unit", "status", "featured", "best_seller")
+    list_filter = ("category", "unit", "status", "featured", "best_seller")
+    list_per_page = 10
+    list_editable = ("original_price", "discount_price", 'status')
+
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ("name", "photo", "active")
+    search_fields = ("name",)
+    list_per_page = 10
+    list_editable = ("active",)
+
+
+@admin.register(Website_Info)
+class Website_InfoAdmin(admin.ModelAdmin):
+    list_display = ("phone", "email", "address", "active")

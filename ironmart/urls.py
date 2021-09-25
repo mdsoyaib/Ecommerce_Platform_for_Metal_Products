@@ -1,6 +1,8 @@
 from ironapp.views import About, Cart, Chechkout, Contact, Gallery, Index, My_account, Shop, Shop_details, Wishlist
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,4 +16,4 @@ urlpatterns = [
     path('shop_details', Shop_details.as_view(), name="shop_details"),
     path('shop', Shop.as_view(), name="shop"),
     path('wishlist', Wishlist.as_view(), name="wishlist")
-]
+]+static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

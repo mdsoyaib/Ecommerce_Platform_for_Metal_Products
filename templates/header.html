@@ -4,15 +4,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="custom-select-box">
-                    <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
-                        <option>¥ JPY</option>
-                        <option>$ USD</option>
-                        <option>€ EUR</option>
-                    </select>
-                </div>
                 <div class="right-phone-box">
-                    <p>Call US :- <a href="#"> +11 900 800 100</a></p>
+                    <p>Call US :- <a href="#"> +8801521206618</a></p>
                 </div>
                 <div class="our-link">
                     <ul>
@@ -82,8 +75,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                    <li class="nav-item active"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
+                    {% url 'index' as url %}
+                    <li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+
                     <li class="dropdown">
                         <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">SHOP</a>
                         <ul class="dropdown-menu">
@@ -95,8 +89,12 @@
                             <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>
+                    {% url 'about' as url %}
+                    <li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
+                    {% url 'gallery' as url %}
+                    <li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
+                    {% url 'contact' as url %}
+                    <li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

@@ -1,3 +1,4 @@
+from ironapp.models import Product, Blog
 from django.shortcuts import render
 from django.views import View
 
@@ -24,7 +25,9 @@ class Gallery(View):
 
 class Index(View):
     def get(self, request):
-        return render(request, 'index.html')
+        product = Product.objects.all().order_by("-id")
+        blog = Blog.objects.all().order_by("-id")
+        return render(request, 'index.html', {'blog': blog, 'product': product})
 
 class My_account(View):
     def get(self, request):
@@ -36,7 +39,8 @@ class Shop_details(View):
 
 class Shop(View):
     def get(self, request):
-        return render(request, 'shop.html')
+        product = Product.objects.all().order_by("-id")
+        return render(request, 'shop.html', {'product': product})
 
 class Wishlist(View):
     def get(self, request):
