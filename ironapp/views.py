@@ -1,4 +1,4 @@
-from ironapp.models import Product, Blog, Website_Info
+from ironapp.models import Category, Product, Blog, Website_Info
 from django.shortcuts import render
 from django.views import View
 
@@ -42,8 +42,13 @@ class Shop_details(View):
 
 class Shop(View):
     def get(self, request):
-        product = Product.objects.all().order_by("-id")
-        return render(request, 'shop.html', {'product': product})
+        category = Category.objects.all()
+        categoryID = request.GET.get('category')
+        if categoryID:
+            product = Product.get_all_products_by_category_id(categoryID)
+        else:
+            product = Product.objects.all().order_by('-id')
+        return render(request, 'shop.html', {'product': product, 'category': category})
 
 class Wishlist(View):
     def get(self, request):

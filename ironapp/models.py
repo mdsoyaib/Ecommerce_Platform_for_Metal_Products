@@ -27,6 +27,15 @@ class Product(models.Model):
     created_at = models.DateTimeField('date time created at', auto_now_add=True)
     updated_at = models.DateTimeField('date time updated at', auto_now=True)
 
+
+    @staticmethod
+    def get_all_products_by_category_id(category_id):
+        if category_id:
+            return Product.objects.filter(category=category_id)
+        else:
+            return Product.objects.all().order_by('-id')
+
+
 class Blog(models.Model):
     name = models.CharField(max_length=50)
     photo = models.ImageField(upload_to= 'uploads/video')
