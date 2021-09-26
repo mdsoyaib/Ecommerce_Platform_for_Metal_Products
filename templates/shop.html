@@ -66,7 +66,7 @@ Iron Mart Shop
                                                         <p class="sale">Sale</p>
                                             
                                                     </div>
-                                                    <img src="{{product.photo}}" class="img-fluid" alt="Image">
+                                                    <img src="/{{product.photo}}" class="img-fluid" alt="Image">
                                                     <div class="mask-icon">
                                                         <ul>
                                                             <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
@@ -78,7 +78,7 @@ Iron Mart Shop
                                                 </div>
                                                 <div class="why-text">
                                                    
-                                                    <h4>{{product.name}}</h4>
+                                                    <h4><a style="color:black;" href="/shop_details/{{product.id}}">{{product.name}}</a></h4>
                                                     
                                                     <h5>{{product.discount_price}} Tk</h5>
                                                 </div>
@@ -113,7 +113,7 @@ Iron Mart Shop
                                             </div>
                                             <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
                                                 <div class="why-text full-width">
-                                                    <h4>{{product.name}}</h4>
+                                                    <h4><a style="text-decoration: none; color: black;" href="/shop_details/{{product.id}}">{{product.name}}</a></h4>
                                                     <h5> <del>{{product.original_price}} Tk</del>  {{product.discount_price}} Tk</h5>
                                                     <p>{{product.product_details}}</p>
                                                     <a class="btn hvr-hover" href="#">Add to Cart</a>

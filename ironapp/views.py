@@ -1,4 +1,4 @@
-from ironapp.models import Product, Blog
+from ironapp.models import Product, Blog, Website_Info
 from django.shortcuts import render
 from django.views import View
 
@@ -17,11 +17,13 @@ class Chechkout(View):
 
 class Contact(View):
     def get(self, request):
-        return render(request, 'contact-us.html')
+        web_info = Website_Info.objects.all()
+        return render(request, 'contact-us.html', {'web_info': web_info})
 
 class Gallery(View):
     def get(self, request):
-        return render(request, 'gallery.html')
+        gallery = Product.objects.all()
+        return render(request, 'gallery.html', {'gallery': gallery})
 
 class Index(View):
     def get(self, request):
@@ -34,8 +36,9 @@ class My_account(View):
         return render(request, 'my-account.html')
 
 class Shop_details(View):
-    def get(self, request):
-        return render(request, 'shop-detail.html')
+    def get(self, request, pk):
+        product = Product.objects.get(id=pk)
+        return render(request, 'shop-detail.html', {'p': product})
 
 class Shop(View):
     def get(self, request):
@@ -45,3 +48,9 @@ class Shop(View):
 class Wishlist(View):
     def get(self, request):
         return render(request, 'wishlist.html')
+
+
+class Footer(View):
+    def get(self, request):
+        web_info = Website_Info.objects.all()
+        return render(request, 'footer.html', {'web_info': web_info})
