@@ -18,7 +18,7 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="login-box">
                     <select id="basic" class="selectpicker show-tick form-control" data-placeholder="Sign In">
-                        <option>Register Here</option>
+                        <option><a href="{% url 'signup' %}">Register Here</a></option>
                         <option>Sign In</option>
                     </select>
                 </div>
@@ -73,6 +73,7 @@
                             <li><a href="{% url 'shop' %}">Shop</a></li>
                             <li><a href="{% url 'checkout' %}">Checkout</a></li>
                             <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+                            <li><a href="{% url 'signup' %}">sign</a></li>
                         </ul>
                     </li>
                     {% url 'about' as url %}
@@ -109,11 +110,14 @@
 <!-- Start Top Search -->
 <div class="top-search">
     <div class="container">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <input type="text" class="form-control" placeholder="Search">
-            <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-        </div>
+        <form role="search" action='/search/'>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input name="q" type="text" class="form-control" placeholder="Search">
+
+                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
+            </div>
+        </form>
     </div>
 </div>
 <!-- End Top Search -->

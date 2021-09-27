@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Blog, Website_Info
+from .models import Category, CustomUser, Product, Blog, Website_Info
 
 # Register your models here.
 
@@ -31,3 +31,8 @@ class BlogAdmin(admin.ModelAdmin):
 @admin.register(Website_Info)
 class Website_InfoAdmin(admin.ModelAdmin):
     list_display = ("phone", "email", "address", "active")
+
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ('email', 'first_name', 'last_name', 'email', 'phone', 'city')
