@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ironapp',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -150,3 +151,8 @@ EMAIL_HOST_PASSWORD = 'iwvqcorwrhidoole'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'noreply@shop.com'
+
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+CRISPY_TEMPLATE_PACK = "bootstrap4"

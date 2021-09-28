@@ -3,24 +3,31 @@
 <div class="main-top">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12">
                 <div class="right-phone-box">
-                    <p>Call US :- <a href="#"> +8801521206618</a></p>
+                    <p>Call US: <a href="#"> +8801521206618</a></p>
                 </div>
                 <div class="our-link">
                     <ul>
                         <li><a href="{% url 'my_account' %}"><i class="fa fa-user s_color"></i> My Account</a></li>
-                        <li><a href="#"><i class="fas fa-location-arrow"></i> Our location</a></li>
                         <li><a href="{% url 'contact' %}"><i class="fas fa-headset"></i> Contact Us</a></li>
+                        {% if user.is_authenticated %}
+                        <li style="color:white;"><i class="fas fa-envelope-square"></i> {{user.email}}</li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
                 <div class="login-box">
-                    <select id="basic" class="selectpicker show-tick form-control" data-placeholder="Sign In">
-                        <option><a href="{% url 'signup' %}">Register Here</a></option>
-                        <option>Sign In</option>
-                    </select>
+                    {% if user.is_authenticated %}
+                    <a style="text-decoration: none; color: white;" 
+                        href="{% url 'logout' %}"><button style="width: 120px;" type="submit" class="btn btn-success">Logout</button></a>
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                    <a style="text-decoration: none; color: white;" 
+                        href="{% url 'login' %}"><button style="width: 120px;" type="submit" class="btn btn-success">Login | SignUp</button></a>
+                    {% endif %}
+                    
                 </div>
                 <div class="text-slid-box">
                     <div id="offer-box" class="carouselTicker">
