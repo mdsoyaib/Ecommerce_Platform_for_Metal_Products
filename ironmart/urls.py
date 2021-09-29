@@ -1,4 +1,4 @@
-from ironapp.views import About, Cart, Chechkout, Contact, Gallery, Index, My_account, Shop, Shop_details, Wishlist, Search, Signup, Activate
+from ironapp.views import About, Cart, Chechkout, Contact, Gallery, Index, My_account, Shop, Shop_details, Wishlist, Search, Signup, Activate, cart_detail, cart_add, cart_remove
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path
@@ -9,7 +9,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Index.as_view(), name="index"),
     path('about', About.as_view(), name="about"),
-    path('cart', Cart.as_view(), name="cart"),
+    # path('cart', Cart.as_view(), name="cart"),
+    path('cart/', cart_detail, name='cart_detail'),
+    path('add/<int:product_id>/', cart_add, name='cart_add'),
+    path('remove/<int:product_id>/', cart_remove, name='cart_remove'),
     path('checkout', Chechkout.as_view(), name="checkout"),
     path('contact', Contact.as_view(), name="contact"),
     path('gallery', Gallery.as_view(), name="gallery"),

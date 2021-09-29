@@ -1,24 +1,62 @@
+from ironapp.cart import Cart
 from ironapp.models import Category, Product, Blog, Website_Info
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.tokens import default_token_generator
-from ironapp.forms import SignUpForm
+from ironapp.forms import SignUpForm, CartAddProductForm
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 class About(View):
     def get(self, request):
         return render(request, 'about.html')
 
-class Cart(View):
-    def get(self, request):
-        return render(request, 'cart.html')
+# ----------------for cart-----------------
+
+@require_POST
+def cart_add(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    form = CartAddProductForm(request.POST)
+
+    if product.quantity == 0:
+        return redirect('cart_detail')
+    else:
+
+        if form.is_valid():
+            cd = form.cleaned_data
+            print(cd)
+            cart.add(product=product, quantity=cd['quantity'], override_quantity=cd['override'])
+
+        return redirect('cart_detail')
+
+
+@require_POST
+def cart_remove(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    cart.remove(product)
+
+    return redirect('cart_detail')
+
+
+def cart_detail(request):
+    cart = Cart(request)
+    for item in cart:
+        item['update_quantity_form'] = CartAddProductForm(initial={
+            'quantity': item['quantity'],
+            'override': True,
+        })
+    return render(request, 'cart.html', {'cart': cart})
+
+# ----------------for cart-----------------
 
 class Chechkout(View):
     def get(self, request):
@@ -47,7 +85,8 @@ class My_account(View):
 class Shop_details(View):
     def get(self, request, pk):
         product = Product.objects.get(id=pk)
-        return render(request, 'shop-detail.html', {'p': product})
+        cart_product_form = CartAddProductForm()
+        return render(request, 'shop-detail.html', {'product': product, 'cart_product_form': cart_product_form})
 
 class Shop(View):
     def get(self, request):
@@ -75,6 +114,17 @@ class Search(View):
         q = request.GET.get('q')
         product = Product.objects.filter(name__icontains=q).order_by('-id')
         return render(request, 'search.html', {'product': product})
+
+
+class Header(View):
+    def get(self, request):
+        cart = Cart(request)
+        for item in cart:
+            item['update_quantity_form'] = CartAddProductForm(initial={
+                'quantity': item['quantity'],
+                'override': True,
+            })
+        return render(request, 'header.html', {'cart': cart})
 
 
 class Signup(View):

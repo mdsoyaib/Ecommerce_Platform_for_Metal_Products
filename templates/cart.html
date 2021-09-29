@@ -28,7 +28,7 @@ Iron Mart Cart
                     <div class="table-main table-responsive">
                         <table class="table">
                             <thead>
-                                <tr>
+                                <tr style="text-align:center;">
                                     <th>Images</th>
                                     <th>Product Name</th>
                                     <th>Price</th>
@@ -38,78 +38,43 @@ Iron Mart Cart
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                {% for item in cart %}
+                                {% with product=item.product %}
+                                <tr style="text-align:center;">
                                     <td class="thumbnail-img">
                                         <a href="#">
-									<img class="img-fluid" src="/static/images/img-pro-01.jpg" alt="" />
+									<img class="img-fluid" src="/{{product.photo}}" alt="" />
 								</a>
                                     </td>
                                     <td class="name-pr">
-                                        <a href="#">
-									Lorem ipsum dolor sit amet
+                                        <a href="/shop_details/{{product.id}}">
+									{{product.name}}
 								</a>
                                     </td>
                                     <td class="price-pr">
-                                        <p>$ 80.0</p>
+                                        <p>{{item.discount_price}}</p>
                                     </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
+                                    <td class="">      
+                                        <form action="{% url 'cart_add' product.id %}" method="post">
+                                            {{ item.update_quantity_form.quantity }}
+                                            {{ item.update_quantity_form.override }}
+                                            <input class="btn btn-info" type="submit" value="Update">
+                                            {% csrf_token %}
+                                        </form>                         
+                                    </td>                               
                                     <td class="total-pr">
-                                        <p>$ 80.0</p>
+                                        <p>{{item.total_price}}</p>
                                     </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
+                                    <form action="{% url 'cart_remove' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <td class="remove-pr">
+                                            <button class="btn" style="border:none;"><i style="color:black;" class="fas fa-trash-alt"></i></a></button>
+                                        </td>
+                                    </form>
                                 </tr>
-                                <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="#">
-									<img class="img-fluid" src="/static/images/img-pro-02.jpg" alt="" />
-								</a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="#">
-									Lorem ipsum dolor sit amet
-								</a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ 60.0</p>
-                                    </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ 80.0</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="#">
-									<img class="img-fluid" src="/static/images/img-pro-03.jpg" alt="" />
-								</a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="#">
-									Lorem ipsum dolor sit amet
-								</a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ 30.0</p>
-                                    </td>
-                                    <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ 80.0</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="#">
-									<i class="fas fa-times"></i>
-								</a>
-                                    </td>
-                                </tr>
+                                {% endwith %}
+                                {% endfor %}
+
                             </tbody>
                         </table>
                     </div>
@@ -117,19 +82,10 @@ Iron Mart Cart
             </div>
 
             <div class="row my-5">
-                <div class="col-lg-6 col-sm-6">
-                    <div class="coupon-box">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text">
-                            <div class="input-group-append">
-                                <button class="btn btn-theme" type="button">Apply Coupon</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-sm-6">
+
+                <div class="col-lg-12 col-sm-6">
                     <div class="update-box">
-                        <input value="Update Cart" type="submit">
+                        <a href="{% url 'shop' %}"><input value="Continue Shopping" type="submit"></a>
                     </div>
                 </div>
             </div>
@@ -141,20 +97,7 @@ Iron Mart Cart
                         <h3>Order summary</h3>
                         <div class="d-flex">
                             <h4>Sub Total</h4>
-                            <div class="ml-auto font-weight-bold"> $ 130 </div>
-                        </div>
-                        <div class="d-flex">
-                            <h4>Discount</h4>
-                            <div class="ml-auto font-weight-bold"> $ 40 </div>
-                        </div>
-                        <hr class="my-1">
-                        <div class="d-flex">
-                            <h4>Coupon Discount</h4>
-                            <div class="ml-auto font-weight-bold"> $ 10 </div>
-                        </div>
-                        <div class="d-flex">
-                            <h4>Tax</h4>
-                            <div class="ml-auto font-weight-bold"> $ 2 </div>
+                            <div class="ml-auto font-weight-bold"> {{ cart.get_total_price }}</div>
                         </div>
                         <div class="d-flex">
                             <h4>Shipping Cost</h4>
@@ -163,7 +106,7 @@ Iron Mart Cart
                         <hr>
                         <div class="d-flex gr-total">
                             <h5>Grand Total</h5>
-                            <div class="ml-auto h5"> $ 388 </div>
+                            <div class="ml-auto h5"> {{ cart.get_total_price }}</div>
                         </div>
                         <hr> </div>
                 </div>

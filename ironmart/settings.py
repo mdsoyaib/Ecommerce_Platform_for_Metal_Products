@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'ironapp.context_processors.cart',
             ],
         },
     },
@@ -156,3 +157,6 @@ DEFAULT_FROM_EMAIL = 'noreply@shop.com'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+
+CART_SESSION_ID = 'cart'

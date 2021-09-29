@@ -64,7 +64,7 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa fa-bars"></i>
             </button>
-                <a class="navbar-brand" href="index.html"><img width="200px" src="/static/images/ironmart.png" class="logo" alt=""></a>
+                <a class="navbar-brand" href="{% url 'index' %}"><img width="200px" src="/static/images/ironmart.png" class="logo" alt=""></a>
             </div>
             <!-- End Header Navigation -->
 
@@ -80,7 +80,6 @@
                             <li><a href="{% url 'shop' %}">Shop</a></li>
                             <li><a href="{% url 'checkout' %}">Checkout</a></li>
                             <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
-                            <li><a href="{% url 'signup' %}">sign</a></li>
                         </ul>
                     </li>
                     {% url 'about' as url %}
@@ -98,9 +97,13 @@
                 <ul>
                     <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
                     <li class="cart-menu">
-                        <a href="{% url 'cart' %}">
+                        <a href="{% url 'cart_detail' %}">
                             <i class="fa fa-shopping-bag"></i>
-                            <span class="badge">3</span>
+                            {% with total_items=cart|length %}
+                            {% if total_items > 0 %}
+                            <span class="badge">{{ total_items }}</span>
+                            {% endif %}
+                            {% endwith %}
                             <p>My Cart</p>
                         </a>
                     </li>

@@ -20,7 +20,7 @@ class Product(models.Model):
     original_price = models.PositiveIntegerField(max_length=12)
     discount_price = models.PositiveIntegerField(max_length=12)
     product_details = models.TextField(max_length=300)
-    stock = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(null=True, blank=True)
     unit = models.CharField(max_length=10, choices=unit)
     photo = models.ImageField(upload_to= 'uploads/product')
     status = models.BooleanField(default=True)
