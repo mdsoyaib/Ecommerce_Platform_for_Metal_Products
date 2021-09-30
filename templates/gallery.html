@@ -12,7 +12,7 @@ Iron Mart Gallery
                     <h2>Gallery</h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                        <li class="breadcrumb-item active">Services</li>
+                        <li class="breadcrumb-item active">Gallery</li>
                     </ul>
                 </div>
             </div>
@@ -49,17 +49,13 @@ Iron Mart Gallery
                 <div class="col-lg-3 col-md-6 special-grid bulbs">
                     <div class="products-single fix">
                         <div class="box-img-hover">
-                            <div class="type-lb">
-                                <p class="sale">Sale</p>
-                            </div>
-                            <img src="{{gallery.photo}}" class="img-fluid" alt="Image">
+                            <img style="height: 200px; width: 220px;" src="{{gallery.photo}}" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                     <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                                 </ul>
-                                <a class="cart" href="#">Add to Cart</a>
                             </div>
                         </div>
                     </div>

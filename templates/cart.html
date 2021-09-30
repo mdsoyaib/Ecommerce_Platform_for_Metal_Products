@@ -89,7 +89,7 @@ Iron Mart Cart
                     </div>
                 </div>
             </div>
-
+            {% if not cart.get_total_price == 0 %}
             <div class="row my-5">
                 <div class="col-lg-8 col-sm-12"></div>
                 <div class="col-lg-4 col-sm-12">
@@ -110,8 +110,9 @@ Iron Mart Cart
                         </div>
                         <hr> </div>
                 </div>
-                <div class="col-12 d-flex shopping-box"><a href="checkout.html" class="ml-auto btn hvr-hover">Checkout</a> </div>
+                <div class="col-12 d-flex shopping-box"><a href="{% url 'checkout' %}" class="ml-auto btn hvr-hover">Checkout</a> </div>
             </div>
+            {% endif %}
 
         </div>
     </div>

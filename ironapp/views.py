@@ -1,5 +1,5 @@
 from ironapp.cart import Cart
-from ironapp.models import Category, Product, Blog, Website_Info
+from ironapp.models import Category, Product, Blog, Website_Info, Order, OrderDetail, BillingInfo, ContactForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.contrib.sites.shortcuts import get_current_site
@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.views.decorators.http import require_POST
+from django.db.models import F
 
 # Create your views here.
 class About(View):
@@ -58,14 +59,92 @@ def cart_detail(request):
 
 # ----------------for cart-----------------
 
-class Chechkout(View):
+#---------------for order-----------------
+
+def checkout(request):
+    cart = Cart(request)
+    user = request.user
+    if user.is_authenticated:
+        return render(request, 'checkout.html', {'cart': cart})
+    else:
+        return redirect('login')
+
+
+def insert_order(request):
+    cart = Cart(request)
+    if request.method == "POST":
+        total_price = request.POST["total_price"]
+        user = request.user
+
+# -------------billing info-------------------
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        address = request.POST['address']
+        zip_code = request.POST['zip_code']
+        phone = request.POST['phone']
+        email = request.POST['email']
+
+# -------------billing info------------------
+
+        order = Order(total_price=total_price, customer=user)
+
+        # print(order.id)
+
+        billing = BillingInfo(first_name=first_name, last_name=last_name, address=address, zip_code=zip_code, phone=phone, order=order, customer=user, email=email)
+
+        order.save()
+        billing.save()
+        cart.clear()
+
+        for item in cart:
+            product = item['product']
+            quantity = item['quantity']
+            price = item['total_price']
+            order_details = OrderDetail(quantity=quantity, price=price, product=product, order=order)
+            order_details.save()
+            # find product by id
+            # print(item)
+            Product.objects.filter(id=item['id']).update(quantity=F('quantity')-item['quantity'])
+            # update product qauntity old_qyt - cartqyt
+    return redirect("order_history")
+
+#------------------for order end ----------------
+
+
+class OrderHistory(View):
     def get(self, request):
-        return render(request, 'checkout.html')
+        user = request.user
+        if user.is_authenticated:
+            orders = Order.objects.filter().order_by('-id')
+            return render(request, 'order_history.html', {'orders': orders})
+        else:
+            return redirect('login')
+
+
+class CancelOrder(View):
+    def post(self, request):
+        id = request.POST['order_id']
+        Order.objects.filter(id=id).delete()
+        return redirect(request.META['HTTP_REFERER'])
+
+
+
+
 
 class Contact(View):
     def get(self, request):
         web_info = Website_Info.objects.all()
         return render(request, 'contact-us.html', {'web_info': web_info})
+    
+    def post(self, request):
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+        
+        contact = ContactForm(name=name, email=email, subject=subject, message=message)
+        contact.save()
+        return redirect('contact')
 
 class Gallery(View):
     def get(self, request):
@@ -80,7 +159,11 @@ class Index(View):
 
 class My_account(View):
     def get(self, request):
-        return render(request, 'my-account.html')
+        user = request.user
+        if user.is_authenticated:
+            return render(request, 'my-account.html')
+        else:
+            return redirect('login')
 
 class Shop_details(View):
     def get(self, request, pk):
@@ -97,6 +180,7 @@ class Shop(View):
         else:
             product = Product.objects.all().order_by('-id')
         return render(request, 'shop.html', {'product': product, 'category': category})
+
 
 class Wishlist(View):
     def get(self, request):

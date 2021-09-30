@@ -29,10 +29,10 @@ Iron Mart My Account
                         <div class="account-box">
                             <div class="service-box">
                                 <div class="service-icon">
-                                    <a href="#"> <i class="fa fa-gift"></i> </a>
+                                    <a href="{% url 'order_history' %}"> <i class="fa fa-gift"></i> </a>
                                 </div>
                                 <div class="service-desc">
-                                    <h4>Your Orders</h4>
+                                    <h4><a style="text-decoration: none;" href="{% url 'order_history' %}">Your Orders</a></h4>
                                     <p>Track, return, or buy things again</p>
                                 </div>
                             </div>

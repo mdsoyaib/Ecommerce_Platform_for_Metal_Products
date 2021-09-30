@@ -16,10 +16,10 @@ class Product(models.Model):
     ('pcs', 'pcs')   
     )
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
     original_price = models.PositiveIntegerField(max_length=12)
     discount_price = models.PositiveIntegerField(max_length=12)
-    product_details = models.TextField(max_length=300)
+    product_details = models.TextField()
     quantity = models.PositiveIntegerField(null=True, blank=True)
     unit = models.CharField(max_length=10, choices=unit)
     photo = models.ImageField(upload_to= 'uploads/product')
@@ -28,6 +28,10 @@ class Product(models.Model):
     best_seller =models.BooleanField()
     created_at = models.DateTimeField('date time created at', auto_now_add=True)
     updated_at = models.DateTimeField('date time updated at', auto_now=True)
+
+
+    def __str__(self):
+        return self.name
 
 
     @staticmethod
@@ -112,3 +116,56 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return f"{self.email}"
     
 
+#----------- for order -----------------
+
+class Order(models.Model):
+    status = (
+        ("Pending", "Pending"),
+        ("Accepted", "Accepted"),
+        ("Canceled", "Canceled"),
+        ("Delivered", "Delivered"),
+    )
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    # user = models.EmailField(max_length=255, null=True, blank=True)
+    order_date = models.DateField(auto_now_add=True, null=True, blank=True)
+    order_time = models.TimeField(auto_now_add=True, null=True, blank=True)
+    total_price = models.CharField(max_length=50, null=True, blank=True)
+    status = models.CharField(max_length=50, default='Pending', choices=status, auto_created=True)
+    created_at = models.DateTimeField('date time created at', auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField('date time updated at', auto_now=True, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.pk}"
+
+
+class OrderDetail(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.PositiveIntegerField(null=True, blank=True)
+    price = models.PositiveIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField('date time created at', auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField('date time updated at', auto_now=True, null=True, blank=True)
+
+
+class BillingInfo(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    first_name = models.CharField(max_length=50, null=True, blank=True)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
+    phone = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(max_length=50, null=True, blank=True)
+    address= models.TextField(null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=100, null=True, blank=True)
+    zip_code = models.CharField(max_length=50, null=True, blank=True)
+
+
+# ----------------- for order end ------------------
+
+
+class ContactForm(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(max_length = 255, null=True, blank=True)
+    subject = models.CharField(max_length=255, null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    timeStamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)

@@ -73,15 +73,8 @@
                 <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
                     {% url 'index' as url %}
                     <li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
-
-                    <li class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Shop</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'shop' %}">Shop</a></li>
-                            <li><a href="{% url 'checkout' %}">Checkout</a></li>
-                            <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
-                        </ul>
-                    </li>
+                    {% url 'shop' as url %}
+                    <li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{% url 'shop' %}">Shop</a></li>
                     {% url 'about' as url %}
                     <li class="nav-item {% if request.path == url %}active{% endif %}"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
                     {% url 'gallery' as url %}

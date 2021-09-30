@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>GreenAgro Order History</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/static/core/img/favicon.png" type="image/gif/png" sizes="16x16">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Audiowide&family=Baumans&family=Montserrat+Alternates:wght@600&family=Orbitron:wght@500&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+    <style>
+        .row a button:hover {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+{% if user.is_authenticated %}
+<hr>
+<div>
+<h3 style="text-align: center;">Orders</h3>
+</div>
+<div style="width: 90%; margin: auto; padding-bottom: 50px;">
+    <div class="row" style="padding-bottom: 40px;">
+        <div style="float: left;">
+            <h5>Hello, {{user.first_name}} {{user.last_name}}</h5>
+        </div>
+        <div style="float: right;">
+            <a href="{% url 'index' %}" style="text-decoration: none; color: white;">
+                <button type="button" class="btn btn-success"
+                        style="position: absolute; font-weight: bold; right: 5%; background-color: #7fad39;">
+                    Go Back to Home
+                </button>
+            </a>
+        </div>
+    </div>
+    <div>
+        <table class="table table-hover">
+            <thead class="thead-dark" style="color: white;">
+            <tr style="font-weight: bold;">
+                <th scope="col">Order ID</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Order Time</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Order Status</th>
+                <th scope="col">Cancel</th>
+            </tr>
+            </thead>
+            <tbody class="order-history-tbody">
+
+            {% for orders in orders %}
+            {% if user == orders.customer %}
+
+            <tr>
+                <th scope="row">GA{{orders.pk}}</a></th>
+                <td>{{orders.order_date}}</td>
+                <td>{{orders.order_time}}</td>
+                <td>{{orders.total_price}} TK</td>
+                <td>{{orders.status}}</td>
+                <form method="post" action="/cancel_order/">
+                    {% csrf_token %}
+                    {% if orders.status == "Pending" %}
+                    <td><button class="btn btn-danger">Cancel</button></td>
+                    <input type="hidden" name="order_id" value="{{orders.pk}}">
+                    {% endif %}
+                </form>
+            </tr>
+            {% endif %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% else %}
+<h5 style="text-align: center; padding-top: 50px;"><a href="{% url 'login' %}" style="list-style: none;">Login to your
+    account first</a></h5>
+{% endif %}
+
+<script src="/static/core/jquery/jquery-3.2.1.min.js"></script>
+<script src="/static/core/js/popper.js"></script>
+<script src="/static/core/js/bootstrap.min.js"></script>
+<script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+
+</script>
+</body>
+</html>
