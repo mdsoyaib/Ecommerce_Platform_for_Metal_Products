@@ -30,12 +30,11 @@ Iron Mart Shop
                             <div class="col-12 col-sm-8 text-center text-sm-left">
                                 <div class="toolbar-sorter-right">
                                     <span>Sort by </span>
-                                    <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
+                                    <select id="basic" class="selectpicker show-tick form-control" onchange="location=this.value;" data-placeholder="$ USD">
 									<option data-display="Select">Nothing</option>
-									<option value="1">Popularity</option>
-									<option value="2">High Price → High Price</option>
-									<option value="3">Low Price → High Price</option>
-									<option value="4">Best Selling</option>
+									<option value="{% url 'shop' %}">Popularity</option>
+									<option value="{% url 'high_to_low' %}">High Price → High Price</option>
+									<option value="{% url 'low_to_high' %}">Low Price → High Price</option>
 								</select>
                                 </div>
                                 <p>Showing all 4 results</p>

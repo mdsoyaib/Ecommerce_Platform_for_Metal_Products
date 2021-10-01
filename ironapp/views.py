@@ -264,3 +264,25 @@ class Activate(View):
             return render(request, 'acc_active_done.html')
         else:
             return render(request, 'acc_active_invalid.html')
+
+
+#--------- filter products by price -----------------
+
+def low_to_high(request):
+    category = Category.objects.all()
+    categoryID = request.GET.get('category')
+    if categoryID:
+        product = Product.get_all_products_by_category_id(categoryID)
+    else:
+        product = Product.objects.all().order_by('original_price')
+    return render(request, 'shop.html', {'product': product, 'category': category}) 
+
+
+def high_to_low(request):
+    category = Category.objects.all()
+    categoryID = request.GET.get('category')
+    if categoryID:
+        product = Product.get_all_products_by_category_id(categoryID)
+    else:
+        product = Product.objects.all().order_by('-original_price')
+    return render(request, 'shop.html', {'product': product, 'category': category}) 
